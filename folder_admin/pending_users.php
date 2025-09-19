@@ -30,7 +30,7 @@
          </tr>
 
           <?php
-          $stmt = $pdo->query('SELECT * FROM users WHERE status = "pending"');
+          $stmt = $pdo->query("SELECT * FROM users WHERE status = 'pending'");
           $users = $stmt->fetchAll(); 
 
           if($stmt->rowCount() > 0){
