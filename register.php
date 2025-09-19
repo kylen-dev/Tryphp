@@ -16,8 +16,10 @@ if (isset($_SESSION['userID'])) {
     }
 }
 
-// ✅ Use your shared Postgres connection
 require_once __DIR__ . '/inc/db.php';
+
+// Get PostgreSQL PDO instance
+$pdo = get_db_pdo();
 
 $error = '';
 
