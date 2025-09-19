@@ -1,0 +1,10 @@
+# Ignore system files
+.DS_Store
+Thumbs.db
+
+# Ignore environment config
+.env
+/vendor
+/node_modules
+/.idea
+/.vscode

@@ -1,0 +1,7 @@
+{
+  "name": "kylen/myphpsite",
+  "description": "A simple PHP site for tenants, landlords, and admins",
+  "require": {
+    "php": ">=8.0"
+  }
+}

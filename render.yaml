@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: my-php-site
+    env: php
+    buildCommand: ""
+    startCommand: ""
+    plan: free
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: my-php-db
+          property: connectionString
+
+databases:
+  - name: my-php-db
+    plan: free

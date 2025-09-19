@@ -1,0 +1,105 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+body {
+  font-family: "Poppins", "Roboto", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  margin: 0;
+  padding: 0;
+  background-color: rgb(255, 255, 255);
+  color: rgb(22, 21, 21);
+}
+
+.navbar {
+  top: 0;
+  position: sticky;
+  z-index: 1000;
+  padding: 0;
+}
+.navbar-expand-lg .container-fluid {
+  background-color: rgb(0, 0, 0);
+  width: 100%;
+  border-bottom: rgb(145, 20, 20) solid 3px;
+}
+
+.nav-item a {
+  color: white;
+}
+.nav-item a.active {
+  color: red !important;
+  font-weight: bolder;
+}
+
+.nav-item a:hover {
+  color: red !important;
+  transition: transform 0.5s ease;
+  transform: translateY(-7px);
+}
+.navbar-toggler-icon {
+  filter: invert(1);
+}
+
+.scroll {
+  overflow-x: auto;
+}
+
+select option {
+  font-size: 15px;
+}
+
+a.edit {
+  background-color: #ebe3e3;
+}
+
+label {
+  font-weight: bolder;
+  color: rgb(61, 148, 230);
+}
+
+input[type="text"],
+input[type="password"],
+input[type="email"],
+input[type="select"],
+input[type="date"] {
+  border-color: blue;
+}
+
+#link {
+  text-decoration: none;
+}
+
+#link:hover {
+  text-decoration: underline;
+}
+
+th {
+  color: red;
+}
+
+.logo img {
+  height: 100px;
+  width: 100px;
+}
+
+.players th,
+.register {
+  font-weight: 900;
+}
+
+.update:hover,
+.delete:hover {
+  opacity: 0.8;
+}
+
+i {
+  padding: 5px;
+}
+
+img.img-fluid {
+  border: 1px solid #ccc;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  background: #f9f9f9;
+}
