@@ -4,6 +4,12 @@
     include '../head.php';
     include 'navbar_tenant.php';
     include 'connection_tenant.php';
+
+    if (!isset($_SESSION['userID']) || $_SESSION['role'] !== 'Tenant') {
+    header("Location: ../login.php");
+    exit();
+}
+
 ?>
 
 <!DOCTYPE html>

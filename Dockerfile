@@ -17,5 +17,8 @@ RUN chown -R www-data:www-data /var/www/html \
     && find /var/www/html -type d -exec chmod 755 {} \; \
     && find /var/www/html -type f -exec chmod 644 {} \;
 
-EXPOSE 80
+# Make Apache listen on Render's dynamic port
+RUN sed -i "s/80/\${PORT}/g" /etc/apache2/sites-available/000-default.conf \
+    && sed -i "s/80/\${PORT}/g" /etc/apache2/ports.conf
+
 CMD ["apache2-foreground"]

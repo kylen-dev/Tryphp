@@ -1,65 +1,57 @@
 <?php 
-  session_start();
+session_start();
 
-  if (isset($_SESSION['userID'])) {
-      switch ($_SESSION['role']) {
-          case 'Landlord':
-              header("Location: folder_landlord/landlord_main.php");
-              exit();
-          case 'Tenant':
-              header("Location: folder_tenant/tenant_main.php");
-              exit();
-          default:
-              header("Location: folder_admin/admin_main.php");
-              exit();
-      }
-  }
-
-    //Php database connection
-    $localhost = 'localhost:3307';
-    $dbname = 'project';
-    $username = 'root';
-    $password = '';
-
-    try {
-    $pdo = new PDO("mysql:host=$localhost;dbname=$dbname", $username, $password); 
-       $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); 
-       
-        } 
-       catch (PDOException $e) { 
-       echo "Connection failed: " . $e->getMessage(); 
-       } 
-      
-      $error = '';
-       
-      //Register new user
-       if (isset($_POST['register'])) {
-
-        $firstName = $_POST['firstName'];
-        $lastName = $_POST['lastName'];
-        $userID = $_POST['userID'];
-        $email = $_POST['email'];
-        $role = $_POST['role'];
-        $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
-        
-        $stmt_check = $pdo->prepare("SELECT * FROM users WHERE userID = ?");
-        $stmt_check->execute([$userID]);
-
-        if ($stmt_check->rowCount() > 0) {
-        $error = "userID already exists!";
-         } else {
-        $sql = "INSERT INTO users (firstName, lastName, userID, email, role, password, status) VALUES (?, ?, ?, ?, ?, ?, 'pending')";
-        $stmt = $pdo->prepare($sql);
-        if ($stmt->execute([$firstName, $lastName, $userID, $email, $role, $password])) {
-            echo '<script type = "text/javascript">';
-            echo 'alert("Your account is now pending for approval!");';
-            echo 'window.location.href = "login.php";';
-            echo '</script>';
-        } else {
-            echo "Registration unsuccessful!";
-        }
-      }
+// Redirect if already logged in
+if (isset($_SESSION['userID'])) {
+    switch ($_SESSION['role']) {
+        case 'Landlord':
+            header("Location: folder_landlord/landlord_main.php");
+            exit();
+        case 'Tenant':
+            header("Location: folder_tenant/tenant_main.php");
+            exit();
+        default:
+            header("Location: folder_admin/admin_main.php");
+            exit();
     }
+}
+
+// ✅ Use your shared Postgres connection
+require_once __DIR__ . '/inc/db.php';
+
+$error = '';
+
+// Register new user
+if (isset($_POST['register'])) {
+    $firstName = $_POST['firstName'];
+    $lastName = $_POST['lastName'];
+    $userID = $_POST['userID'];
+    $email = $_POST['email'];
+    $role = $_POST['role'];
+    $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
+
+    // Check for duplicate userID
+    $stmt_check = $pdo->prepare("SELECT 1 FROM users WHERE userID = ?");
+    $stmt_check->execute([$userID]);
+
+    if ($stmt_check->rowCount() > 0) {
+        $error = "userID already exists!";
+    } else {
+        $sql = "INSERT INTO users (firstName, lastName, userID, email, role, password, status) 
+                VALUES (?, ?, ?, ?, ?, ?, 'pending')";
+        $stmt = $pdo->prepare($sql);
+
+        if ($stmt->execute([$firstName, $lastName, $userID, $email, $role, $password])) {
+            echo '<script type="text/javascript">
+                    alert("Your account is now pending for approval!");
+                    window.location.href = "login.php";
+                  </script>';
+            exit();
+        } else {
+            $error = "Registration unsuccessful!";
+        }
+    }
+}
 ?>
 
 <!DOCTYPE html>

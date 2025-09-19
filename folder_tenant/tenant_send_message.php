@@ -2,6 +2,12 @@
     session_start();
     include 'connection_tenant.php';
 
+    if (!isset($_SESSION['userID']) || $_SESSION['role'] !== 'Tenant') {
+    header("Location: ../login.php");
+    exit();
+}
+
+
     if (isset($_POST['send'])) {
         $senderID = $_SESSION['userID'];
         $receiverID = $_POST['receiverID'] ?? null;

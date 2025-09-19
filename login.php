@@ -16,19 +16,19 @@
       }
   }
 
-  $localhost = 'localhost:3307';
-  $dbname = 'project';
-  $username = 'root';
-  $password = '';
+  // PostgreSQL connection
+  $host = "dpg-d36gje7fte5s73bf098g-a.singapore-postgres.render.com";
+  $dbname = "tryphpdb";
+  $username = "tryphpdb_user";
+  $password = "NUIHpl2WRo2VBQZleyO6LmLiwnrQhFcc";
 
   try {
-  $pdo = new PDO("mysql:host=$localhost;dbname=$dbname", $username, $password); 
-      $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); 
-      
-      } 
-      catch (PDOException $e) { 
-      echo "Connection failed: " . $e->getMessage(); 
-      }
+      $pdo = new PDO("pgsql:host=$host;dbname=$dbname", $username, $password);
+      $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+  } catch (PDOException $e) {
+      echo "Connection failed: " . $e->getMessage();
+      exit();
+  }
 
   if (isset($_POST['login'])) {
     

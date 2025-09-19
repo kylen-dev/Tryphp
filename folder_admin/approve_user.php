@@ -1,29 +1,34 @@
 <?php
-    //Php database connection
-    $localhost = 'localhost:3307';
-    $dbname = 'project';
-    $username = 'root';
-    $password = '';
+session_start();
 
-    try {
-    $pdo = new PDO("mysql:host=$localhost;dbname=$dbname", $username, $password); 
-       $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); 
-       echo "Connected successfully!";
-        } 
-       catch (PDOException $e) { 
-       echo "Connection failed: " . $e->getMessage(); 
-       } 
+// Ensure only admin can access
+if (!isset($_SESSION['userID']) || $_SESSION['role'] !== 'Admin') {
+    header("Location: ../login.php");
+    exit();
+}
 
-       if (isset($_GET['id'])) { 
-        $userID = $_GET['id'];
-        $stmt = $pdo->prepare('UPDATE users SET status = "approved" WHERE userID = ?');
-        if ($stmt->execute([$userID])) {
-            echo "User approved successfully";
-        } else {
-            echo "User approved unsuccessfully";
-        }
+// Include PostgreSQL connection
+require_once '../inc/db.php';
+
+try {
+    $pdo = get_db_pdo();
+} catch (Exception $e) {
+    die("Database connection failed: " . $e->getMessage());
+}
+
+// Approve user if 'id' is provided in GET
+if (isset($_GET['id'])) {
+    $userID = $_GET['id'];
+
+    $stmt = $pdo->prepare("UPDATE users SET status = 'approved' WHERE userID = ?");
+    if ($stmt->execute([$userID])) {
+        // Optional: store a success message in session
+        $_SESSION['message'] = "User approved successfully!";
+    } else {
+        $_SESSION['message'] = "Failed to approve user.";
     }
-    
-    header("location: admin_main.php");
+}
 
-?>
+// Redirect back to admin main page
+header("Location: admin_main.php");
+exit();

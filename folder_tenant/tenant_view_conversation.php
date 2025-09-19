@@ -9,7 +9,7 @@
     $propertyID = $_GET['propertyID'] ?? null;
 
     if (!$landlordID || !$propertyID) {
-        echo "Invalid conversation.";
+        header("Location: tenant_inbox.php?error=invalid_conversation");
         exit();
     }
 
