@@ -20,15 +20,14 @@ try {
 if (isset($_GET['id'])) {
     $userID = $_GET['id'];
 
-    $stmt = $pdo->prepare("UPDATE users SET status = 'approved' WHERE userID = ?");
+    $stmt = $pdo->prepare("UPDATE users SET status = 'approved' WHERE userid = ?");
     if ($stmt->execute([$userID])) {
-        // Optional: store a success message in session
         $_SESSION['message'] = "User approved successfully!";
     } else {
         $_SESSION['message'] = "Failed to approve user.";
     }
 }
 
-// Redirect back to admin main page
-header("Location: admin_main.php");
+// Redirect back to pending users page
+header("Location: pending_users.php");
 exit();

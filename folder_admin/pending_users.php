@@ -1,9 +1,9 @@
 <?php
-    session_start();
-    $page = 'pending_users';
-    include '../head.php';
-    include 'navbar_admin.php';
-    include 'connection_admin.php';
+session_start();
+$page = 'pending_users';
+include '../head.php';
+include 'navbar_admin.php';
+include 'connection_admin.php';
 ?>
 
 <!DOCTYPE html>
@@ -17,7 +17,7 @@
 
 <body>
     <div class="container">
-      <h2 class="mt-3" >List of Pending Users</h2>
+      <h2 class="mt-3">List of Pending Users</h2>
       <div class="scroll">
         <table class="table table-sm table-dark mt-4 text-center">
           <tr>
@@ -30,25 +30,28 @@
          </tr>
 
           <?php
+          // Fetch pending users
           $stmt = $pdo->query("SELECT * FROM users WHERE status = 'pending'");
-          $users = $stmt->fetchAll(); 
+          $stmt->setFetchMode(PDO::FETCH_ASSOC); // ensure associative array
+          $users = $stmt->fetchAll();
 
-          if($stmt->rowCount() > 0){
+          if(count($users) > 0){
             foreach ($users as $row) {
+                // Use lowercase keys to match PostgreSQL columns
                 echo "<tr>";
-                echo "<td>{$row['userID']}</td>";
-                echo "<td>{$row['firstName']}</td>";
-                echo "<td>{$row['lastName']}</td>";
+                echo "<td>{$row['userid']}</td>";
+                echo "<td>{$row['lastname']}</td>";
+                echo "<td>{$row['firstname']}</td>";
                 echo "<td>{$row['email']}</td>";
                 echo "<td>{$row['role']}</td>";
                 echo "<td>
-                <a class='border border-warning rounded p-1 bg-warning text-dark mt-2 delete' href='approve_user.php?id={$row['userID']}' onclick=\"return confirm('Do you want to approve this user?')\"><i class='fa fa-check' aria-hidden='true'></i></a>
-                <a class='border border-warning rounded p-1 bg-warning text-dark mt-2 delete' href='deny_user.php?id={$row['userID']}' onclick=\"return confirm('Do you want to deny this user?')\"><i class='fa fa-trash' aria-hidden='true'></i></a>
+                <a class='border border-warning rounded p-1 bg-warning text-dark mt-2 delete' href='approve_user.php?id={$row['userid']}' onclick=\"return confirm('Do you want to approve this user?')\"><i class='fa fa-check' aria-hidden='true'></i></a>
+                <a class='border border-warning rounded p-1 bg-warning text-dark mt-2 delete' href='deny_user.php?id={$row['userid']}' onclick=\"return confirm('Do you want to deny this user?')\"><i class='fa fa-trash' aria-hidden='true'></i></a>
               </td>";
                 echo "</tr>";
             }
           } else{
-            echo "<tr><td colspan='8'>No Data</td></tr>";
+            echo "<tr><td colspan='6'>No Data</td></tr>";
           }
           ?>
 
